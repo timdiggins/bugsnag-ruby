@@ -25,9 +25,11 @@ describe 'Bugsnag' do
   it 'should run the rake middleware when rake tasks crash' do
     ENV['BUGSNAG_TEST_SERVER_PORT'] = server.config[:Port].to_s
     task_fixtures_path = File.join(File.dirname(__FILE__), 'fixtures', 'tasks')
+    puts "gets to here"
     Dir.chdir(task_fixtures_path) do
       system("bundle exec rake test:crash > /dev/null 2>&1")
     end
+    puts "assume doesn't get to here"
     expect(request["events"][0]["metaData"]["rake_task"]).not_to be_nil
     expect(request["events"][0]["metaData"]["rake_task"]["name"]).to eq("test:crash")
   end
